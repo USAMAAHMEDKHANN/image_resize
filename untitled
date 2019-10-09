@@ -1,0 +1,50 @@
+
+import os
+import numpy as np
+import matplotlib.pylab as plt
+from PIL import Image
+
+def plti(im, h=8, **kwargs):
+    """
+    Helper function to plot an image.
+    """
+    y = im.shape[0]
+    x = im.shape[1]
+    w = (y/x) * h
+    plt.figure(figsize=(w,h))
+    plt.imshow(im, interpolation="none", **kwargs)
+    plt.axis('off')
+    
+#initializing emty list
+pics = []
+
+#main aray which will contain all the images
+mainArray = np.zeros(shape=(150,150,3))
+
+#this will look for all the available files in this directory
+rootDir = '.'
+for dirName, subdirList, fileList in os.walk(rootDir):
+    for fname in fileList:
+        #this will each picture name in the empty pics list
+        pics.append(fname)
+
+#printing all the names of pictures
+print(pics)
+
+
+#this loop take each name from pics list and convert it in Array
+for name in pics:
+    %matplotlib inline
+    try:
+        img = Image.open(name)
+        if img.format == "JPEG":
+            im = plt.imread(name)
+            im = im[:150,:150,:3]
+            #Adding each picture in the main array whcih contain all images
+            mainArray += im
+            print("length of single picture:",len(im), "||  Shape of this picture: ",im.shape)
+    except:
+        print("not supported file")
+    
+print("\nProcess comleted with the size of array: ")
+print("Size of main array containing all the images: ",len(mainArray))
